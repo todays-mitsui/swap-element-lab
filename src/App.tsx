@@ -46,6 +46,7 @@ export default function App() {
 
 	const handleSwap = (index: number) => {
 		const newColors = [...colors];
+
 		if (direction === "up") {
 			[newColors[index], newColors[index - 1]] = [
 				newColors[index - 1],
@@ -57,12 +58,16 @@ export default function App() {
 				newColors[index],
 			];
 		}
-		const scrollY = window.scrollY;
-		setColors(newColors);
-		isFixed &&
+
+		if (isFixed) {
+			// 要素入れ替え前のスクロール位置を記憶しておき、setColors() が反映された **後に** スクロール位置を復元する
+			const scrollY = window.scrollY;
 			setTimeout(() => {
 				window.scrollTo({ top: scrollY });
 			}, 0);
+		}
+
+		setColors(newColors);
 	};
 
 	return (
