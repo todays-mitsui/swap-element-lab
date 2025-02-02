@@ -38,10 +38,11 @@ export default function App() {
 	const [isFixed, setIsFixed] = useState(false);
 
 	useEffect(() => {
-		const { height, direction, isFixed } = parseSearch(location.search);
+		const { height, direction, isFixed, scroll } = parseSearch(location.search);
 		height && setHeight(height);
 		direction && setDirection(direction);
 		setIsFixed(isFixed);
+		scroll > 0 && window.scrollTo({ top: scroll });
 	}, []);
 
 	const handleSwap = (index: number) => {
@@ -176,8 +177,9 @@ function Controls(props: ControlsProps) {
 
 interface LocationSearch {
 	height: number | null;
-	isFixed: boolean;
 	direction: MoveDirection | null;
+	isFixed: boolean;
+	scroll: number;
 }
 
 function parseSearch(search: string): LocationSearch {
@@ -195,5 +197,7 @@ function parseSearch(search: string): LocationSearch {
 
 	const isFixed = params.get("fixed") === "true";
 
-	return { height, isFixed, direction };
+	const scroll = parseInt(params.get("scroll") ?? "0", 10);
+
+	return { height, direction, isFixed, scroll };
 }
