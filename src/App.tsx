@@ -60,14 +60,6 @@ export default function App() {
 			];
 		}
 
-		if (isFixed) {
-			// 要素入れ替え前のスクロール位置を記憶しておき、setColors() が反映された **後に** スクロール位置を復元する
-			const scrollY = window.scrollY;
-			setTimeout(() => {
-				window.scrollTo({ top: scrollY });
-			}, 0);
-		}
-
 		setColors(newColors);
 	};
 
@@ -77,7 +69,11 @@ export default function App() {
 				{colors.map((color, index) => (
 					<div
 						className={styles.item}
-						style={{ height: `${height}px`, backgroundColor: color }}
+						style={{
+							height: `${height}px`,
+							backgroundColor: color,
+							overflowAnchor: isFixed ? "none" : "auto",
+						}}
 						key={color}
 					>
 						<h3>{color}</h3>
